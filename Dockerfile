@@ -1,32 +1,3 @@
-# FROM openjdk:8u181-jre-alpine
-
-# ENV HAWKBIT_VERSIONi=0.3.0M6 \
-#     HAWKBIT_HOME=/opt/hawkbit \
-#     HAWKBIT_BRANCH=0.3.0M6 \
-#     HAWKBIT_PROJECT_PATH=/opt/hawkbit/hawkbit \
-#     HAWKBIT_TARGET_PATH=/opt/hawkbit/hawkbit/hawkbit-runtime/hawkbit-update-server/target
-
-# EXPOSE 8080
-
-
-# RUN set -x \
-#     && apk add --no-cache --virtual build-dependencies gnupg unzip libressl wget git-core maven \
-#     && mkdir -p $HAWKBIT_HOME \
-#     && cd $HAWKBIT_HOME \
-#     && apk del build-dependencies \
-#     && git clone git@github.com:eclipse/hawkbit.git -b $HAWKBIT_BRANCH \
-#     && cd $HAWKBIT_PROJECT_PATH
-
-# RUN mvn clean install
-# WORKDIR $HAWKBIT_TARGET_PATH
-# RUN mv hawkbit-update-server*.jar hawkbit-update-server.jar
-
-
-# VOLUME "$HAWKBIT_HOME/data"
-
-# ENTRYPOINT ["java","-jar","hawkbit-update-server.jar","-Xms768m -Xmx768m -XX:MaxMetaspaceSize=250m -XX:MetaspaceSize=250m -Xss300K -XX:+UseG1GC -XX:+UseStringDeduplication -XX:+UseCompressedOops -XX:+HeapDumpOnOutOfMemoryError"]
-
-
 FROM ubuntu:16.04
 
 ENV HAWKBIT_VERSIONi=0.3.0M6 \
@@ -62,14 +33,14 @@ RUN export JAVA_HOME
 RUN apt-get update && apt-get -y install gnupg unzip wget git-core maven \
     && mkdir -p $HAWKBIT_HOME \
     && cd $HAWKBIT_HOME \
-    && git clone https://github.com/eclipse/hawkbit.git -b $HAWKBIT_BRANCH \
-    && cd $HAWKBIT_PROJECT_PATH
+    && git clone https://github.com/eclipse/hawkbit.git -b $HAWKBIT_BRANCH
 
-#RUN mvn clean install
-#WORKDIR $HAWKBIT_TARGET_PATH
-#RUN mv hawkbit-update-server*.jar hawkbit-update-server.jar
+WORKDIR $HAWKBIT_PROJECT_PATH
+RUN mvn clean install
+WORKDIR $HAWKBIT_TARGET_PATH
+RUN mv hawkbit-update-server*.jar hawkbit-update-server.jar
 
 VOLUME "$HAWKBIT_HOME/data"
 
-#ENTRYPOINT ["java","-jar","hawkbit-update-server.jar","-Xms768m -Xmx768m -XX:MaxMetaspaceSize=250m -XX:MetaspaceSize=250m -Xss300K -XX:+UseG1GC -XX:+UseStringDeduplication -XX:+UseCompressedOops -XX:+HeapDumpOnOutOfMemoryError"]
+ENTRYPOINT ["java","-jar","hawkbit-update-server.jar","-Xms768m -Xmx768m -XX:MaxMetaspaceSize=250m -XX:MetaspaceSize=250m -Xss300K -XX:+UseG1GC -XX:+UseStringDeduplication -XX:+UseCompressedOops -XX:+HeapDumpOnOutOfMemoryError"]
 
