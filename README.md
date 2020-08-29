@@ -1,2 +1,3 @@
 # hawkbit-update-server
-hawkbit-update-server docker
+1. Build
+docker-compose up -d
