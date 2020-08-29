@@ -13,3 +13,7 @@ sudo chmod +x /usr/local/bin/docker-compose \
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 
 2. Build compose container  \
 docker-compose up -d 
+
+3. List all image docker \
+docker images -a \
+docker rmi ID_Image
