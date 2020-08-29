@@ -14,6 +14,15 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 2. Build compose container  \
 docker-compose up -d 
 
-3. List all image docker \
+- If want to rebuild hawkbit, please git clone https://github.com/nguyenvuhung/hawkbit.git \
+and rebuild with below command \
+$: docker build . -t "vuhungkt18/hawkbit-update-server:latest-mysql"
+
+3. Start Hawkbit server \
+Start with command: \
+$: ${Your_IP}:8080 \
+Example: http://172.17.0.1:8080 \
+
+4. List all image docker \
 docker images -a \
 docker rmi ID_Image
